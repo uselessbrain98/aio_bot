@@ -1,10 +1,11 @@
+import logging
 from aiogram import types, Router, F
 from aiogram.filters import CommandStart, Command
 from filters.chat_types import ChatTypeFilter
-import logging
+
 
 user_private_router = Router()
-user_private_router.message.filter(ChatTypeFilter(['private']))
+user_private_router.message.filter(ChatTypeFilter(["private"]))
 
 
 logging.basicConfig(level=logging.INFO)
@@ -12,20 +13,32 @@ logging.basicConfig(level=logging.INFO)
 
 @user_private_router.message(CommandStart())
 async def start_cmd(message: types.Message) -> None:
-    await message.answer(f"Вечер в хату, {message.from_user.full_name}. Определитель петуха здесь")
+    """Команда старта"""
+    await message.answer(
+        f"Вечер в хату, {message.from_user.full_name}. Определитель петуха здесь"
+    )
 
 
-@user_private_router.message(Command('about'))
+@user_private_router.message(Command("about"))
 async def menu_cmd(message: types.Message) -> None:
+    """Что умеет бот?"""
     await message.answer("Пока в процессе")
 
 
-@user_private_router.message(F.text.lower() == 'пидорбот пидор')
+@user_private_router.message(F.text.lower() == "пидорбот пидор")
 async def bot_is_pidor(message: types.Message) -> None:
+    """Ответ на обзывательство бота"""
     await message.answer("Сам пидор")
 
 
-@user_private_router.message((F.text.lower().contains('пидор')) | (F.text.lower().contains('гей')))
+@user_private_router.message(
+    (F.text.lower().contains("пидор")) | (F.text.lower().contains("гей"))
+)
 async def pidor_reply(message: types.Message) -> None:
-    await message.answer("ага")
+    """reply +"""
+    await message.reply("+")
 
+
+@user_private_router.message()
+async def all(message: types.Message) -> None:
+    await message.answer('Напиши что-нибудь разумное, кожаный ублюдок')

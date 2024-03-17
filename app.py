@@ -4,11 +4,14 @@ from aiogram.types import BotCommandScopeAllPrivateChats, BotCommandScopeAllGrou
 
 from common.cmd_list import private, group
 from handlers.user_private import user_private_router
+from handlers.user_group import user_group_router
 from settings import BOT_TOKEN
+
 
 dp = Dispatcher()
 dp.include_routers(user_private_router)
-ALLOWED_UPDATES = ['message, edited_message']
+dp.include_routers(user_group_router)
+ALLOWED_UPDATES = ["message, edited_message"]
 
 
 async def main() -> None:
@@ -21,4 +24,3 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
-
