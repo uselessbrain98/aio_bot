@@ -21,11 +21,11 @@ async def menu_cmd(message: types.Message) -> None:
 
 
 @user_private_router.message(F.text.lower() == 'пидорбот пидор')
-async def pidor(message: types.Message) -> None:
+async def bot_is_pidor(message: types.Message) -> None:
     await message.answer("Сам пидор")
 
 
-@user_private_router.message(F.text.lower().contains('пидор'))
-async def pidor(message: types.Message) -> None:
+@user_private_router.message((F.text.lower().contains('пидор')) | (F.text.lower().contains('гей')))
+async def pidor_reply(message: types.Message) -> None:
     await message.answer("ага")
 
