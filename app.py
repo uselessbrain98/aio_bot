@@ -12,6 +12,7 @@ ALLOWED_UPDATES = ['message, edited_message']
 
 
 async def main() -> None:
+    """Запуск и настройка бота"""
     bot = Bot(BOT_TOKEN)
     await bot.set_my_commands(commands=private, scope=BotCommandScopeAllPrivateChats())
     await bot.set_my_commands(commands=group, scope=BotCommandScopeAllGroupChats())
@@ -20,3 +21,4 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
+
