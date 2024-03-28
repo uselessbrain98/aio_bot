@@ -6,7 +6,7 @@ load_dotenv()
 
 # Access the variables
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-
+WEATHER_TOKEN = os.getenv('WEATHER_TOKEN')
 # HOST = os.getenv('HOST')
 # PORT = os.getenv('PORT')
 # USER = os.getenv('USER')

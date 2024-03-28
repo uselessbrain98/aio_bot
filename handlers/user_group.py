@@ -2,6 +2,8 @@ import logging
 import time
 from aiogram import types, Router, F
 from aiogram.filters import Command
+
+from common.weather import get_weather
 from filters.chat_types import ChatTypeFilter
 from common import text_list
 import random
@@ -16,6 +18,20 @@ async def menu_cmd(message: types.Message) -> None:
     """Что умеет бот?"""
     await message.answer(
         "Крестный отец всех ботов цитирует великих персонажей, контролирует заднеприводных и многое другое")
+
+
+@user_group_router.message(Command("current_weather"))
+async def current_weather(message: types.Message) -> None:
+    """Узнать погоду"""
+    r = get_weather('current')
+    temp = r['current']['temp_c']
+    feel = r['current']['feelslike_c']
+    wind = r['current']['wind_kph']
+    press = r['current']['pressure_mb']
+    hum = r['current']['humidity']
+    cond = r['current']['condition']['text']
+    await message.answer(
+        f"Температура за бортом: {temp} С\nОщущается как: {feel} С, нахуй\nЕбучий ветер: {wind} км/ч\nДавление: {press} мбар\nВлажность: {hum} %\nСостояние: {cond}")
 
 
 @user_group_router.message(Command("whopidor"))

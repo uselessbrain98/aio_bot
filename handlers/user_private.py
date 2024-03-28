@@ -25,7 +25,7 @@ async def menu_cmd(message: types.Message) -> None:
     await message.answer("Пока в процессе")
 
 
-@user_private_router.message(F.text.lower() == "пидорбот пидор")
+@user_private_router.message((F.text.lower().contains('пидорбот пидор')) | (F.text.lower().contains('пидорбот для пидоров')))
 async def bot_is_pidor(message: types.Message) -> None:
     """Ответ на обзывательство бота"""
     await message.answer("Сам пидор")

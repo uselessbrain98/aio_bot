@@ -10,6 +10,19 @@ params = {
     'lang': 'ru',
 }
 
-response = requests.get(url=base_url+current_weather, params=params)
 
-print(response.json())
+def get_weather(what):
+    if what == 'current':
+        try:
+            r = requests.get(url=base_url + current_weather, params=params)
+            return r.json()
+        except Exception:
+            return "Что-то пошло не так: 1"
+    elif what == 'forecast':
+        try:
+            r = requests.get(url=base_url + forecast_weather, params=params)
+            return r.json()
+        except Exception:
+            return "Что-то пошло не так: 2"
+    else:
+        return "Что-то пошло не так: 3"
