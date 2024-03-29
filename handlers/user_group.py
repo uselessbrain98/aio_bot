@@ -8,6 +8,8 @@ from filters.chat_types import ChatTypeFilter
 from common import text_list
 import random
 
+from settings.db import create_user
+
 user_group_router = Router()
 user_group_router.message.filter(ChatTypeFilter(["group", "supergroup"]))
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +20,20 @@ async def menu_cmd(message: types.Message) -> None:
     """Что умеет бот?"""
     await message.answer(
         "Крестный отец всех ботов цитирует великих персонажей, контролирует заднеприводных и многое другое")
+
+
+@user_group_router.message(Command("info"))
+async def info(message: types.Message) -> None:
+    """Узнать инфо?"""
+    user_id = message.from_user.id
+    user_name = message.from_user.username
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name
+    chat_id = message.chat.id
+    chat_title = message.chat.title
+    create_user(user_id, user_name, first_name, last_name, chat_id, chat_title)
+    await message.answer(
+        f"Успешно создан пользователь => user_id: {user_id}\nuser_name: {user_name}\nfirst_name: {first_name}\nlast_name: {last_name}")
 
 
 @user_group_router.message(Command("current_weather"))
@@ -75,6 +91,7 @@ async def bot_is_pidor(message: types.Message) -> None:
     )
     & ~(F.text.lower().contains("айнур"))
     & ~(F.text.lower().contains("dgtla"))
+    & ~(F.text.lower().contains("а й"))
 )
 async def pidor_reply(message: types.Message) -> None:
     """reply +"""

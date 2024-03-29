@@ -12,4 +12,5 @@ group = [
     BotCommand(command="bender", description="Цитаты Бендера"),
     BotCommand(command="homer", description="Цитаты Гомера"),
     BotCommand(command="current_weather", description="Узнать текущую погоду"),
+    BotCommand(command="info", description="Тест инфо о сообщении"),
 ]
