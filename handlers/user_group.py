@@ -32,7 +32,7 @@ async def info(message: types.Message) -> None:
     chat_id = message.chat.id
     chat_title = message.chat.title
     sqlite_connection, cursor = connect_to_database()
-    create_user(cursor, sqlite_connection, user_id, user_name, first_name, last_name, chat_id, chat_title)
+    result = create_user(cursor, sqlite_connection, user_id, user_name, first_name, last_name, chat_id, chat_title)
     await message.answer(
         f"""
         Данные о пользователе=>
@@ -41,6 +41,7 @@ async def info(message: types.Message) -> None:
         first_name: {first_name}
         last_name: {last_name}
         chat_id(current): {chat_id}
+        result: {result}
         """)
 
 

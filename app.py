@@ -17,6 +17,7 @@ ALLOWED_UPDATES = ["message, edited_message"]
 async def main() -> None:
     """Запуск и настройка бота"""
     bot = Bot(BOT_TOKEN)
+    await bot.delete_webhook(drop_pending_updates=True)
     await bot.set_my_commands(commands=private, scope=BotCommandScopeAllPrivateChats())
     await bot.set_my_commands(commands=group, scope=BotCommandScopeAllGroupChats())
     await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)

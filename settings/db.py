@@ -3,7 +3,7 @@ import sqlite3
 
 def connect_to_database():
     try:
-        sqlite_connection = sqlite3.connect('C:/py_projects/aio_bot/database.db')
+        sqlite_connection = sqlite3.connect('database.db')
         sqlite_connection.row_factory = sqlite3.Row
         print("Успешное подключение к БД")
         if sqlite_connection:
@@ -33,17 +33,20 @@ def create_user(cursor, sqlite_connection, user_id, user_name, first_name, last_
             chat_exist = get_chats(chat_id, cursor=cursor, sqlite_connection=sqlite_connection)
             if user_exist and chat_exist:
                 cursor.execute(update_user_query, (user_name, first_name, last_name, user_id))
-                print("Пользователь с user_id =", user_id, "уже существует. Его данные обновлены.")
+                return f"Пользователь с user_id ={user_id} уже существует. Его данные обновлены."
             elif user_exist and not chat_exist:
                 cursor.execute(update_user_query, (user_name, first_name, last_name, user_id))
                 cursor.execute(create_chat_query, (chat_id, chat_title))
                 cursor.execute(create_user_chat_query, (user_id, chat_id))
-                print("Пользователь с user_id =", user_id, "уже существует. Его данные обновлены + добавлен новый чат")
+                return f"Пользователь с user_id ={user_id} уже существует. Его данные обновлены + добавлен новый чат"
+            elif not user_exist and chat_exist:
+                cursor.execute(create_user_query, (user_id, user_name, first_name, last_name))
+                return f"Создан пользователь с user_id= {user_id}"
             else:
                 cursor.execute(create_chat_query, (chat_id, chat_title))
                 cursor.execute(create_user_query, (user_id, user_name, first_name, last_name))
                 cursor.execute(create_user_chat_query, (user_id, chat_id))
-                print("Данные успешно добавлены в БД")
+                return f"Данные успешно добавлены в БД: user_id = {user_id}, user_chats = {chat_id}"
     except sqlite3.Error as error:
         print("Общая ошибка SQLite:", error)
     finally:
