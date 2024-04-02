@@ -8,7 +8,7 @@ from filters.chat_types import ChatTypeFilter
 from common import text_list
 import random
 
-from settings.db import create_user
+from settings.db import create_user, connect_to_database
 
 user_group_router = Router()
 user_group_router.message.filter(ChatTypeFilter(["group", "supergroup"]))
@@ -31,9 +31,17 @@ async def info(message: types.Message) -> None:
     last_name = message.from_user.last_name
     chat_id = message.chat.id
     chat_title = message.chat.title
-    create_user(user_id, user_name, first_name, last_name, chat_id, chat_title)
+    sqlite_connection, cursor = connect_to_database()
+    create_user(cursor, sqlite_connection, user_id, user_name, first_name, last_name, chat_id, chat_title)
     await message.answer(
-        f"Успешно создан пользователь => user_id: {user_id}\nuser_name: {user_name}\nfirst_name: {first_name}\nlast_name: {last_name}")
+        f"""
+        Данные о пользователе=>
+        user_id: {user_id}
+        user_name: {user_name}
+        first_name: {first_name}
+        last_name: {last_name}
+        chat_id(current): {chat_id}
+        """)
 
 
 @user_group_router.message(Command("current_weather"))
